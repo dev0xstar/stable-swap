@@ -123,6 +123,14 @@ pub struct InitToken<'info> {
     pub mint: AccountInfo<'info>,
 }
 
+/// Token accounts for a [crate::swap] instruction.
+#[derive(Accounts, Clone)]
+pub struct SwapToken<'info> {
+    /// The token account associated with the user.
+    pub user: AccountInfo<'info>,
+    /// The token account for the pool's reserves of this token.
+    pub reserve: AccountInfo<'info>,
+}
 
 
 
