@@ -8,64 +8,9 @@ use solana_program::{
     pubkey::Pubkey,
 };
 
-/// Program states.
-#[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct SwapInfo {
-    /// Initialized state
-    pub is_initialized: bool,
 
-    /// Paused state
-    pub is_paused: bool,
 
-    /// Nonce used in program address
-    /// The program address is created deterministically with the nonce,
-    /// swap program id, and swap account pubkey.  This program address has
-    /// authority over the swap's token A account, token B account, and pool
-    /// token mint.
-    pub nonce: u8,
 
-    /// Initial amplification coefficient (A)
-    pub initial_amp_factor: u64,
-    /// Target amplification coefficient (A)
-    pub target_amp_factor: u64,
-    /// Ramp A start timestamp
-    pub start_ramp_ts: i64,
-    /// Ramp A stop timestamp
-    pub stop_ramp_ts: i64,
-
-    /// Deadline to transfer admin control to future_admin_key
-    pub future_admin_deadline: i64,
-    /// Public key of the admin account to be applied
-    pub future_admin_key: Pubkey,
-    /// Public key of admin account to execute admin instructions
-    pub admin_key: Pubkey,
-
-    /// Token A
-    pub token_a: SwapTokenInfo,
-    /// Token B
-    pub token_b: SwapTokenInfo,
-
-    /// Pool tokens are issued when A or B tokens are deposited.
-    /// Pool tokens can be withdrawn back to the original A or B token.
-    pub pool_mint: Pubkey,
-    /// Fees
-    pub fees: Fees,
-}
-
-/// Information about one of the tokens.
-#[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct SwapTokenInfo {
-    /// Token account for pool reserves
-    pub reserves: Pubkey,
-    /// Mint information for the token
-    pub mint: Pubkey,
-    /// Public key of the admin token account to receive trading and / or withdrawal fees for token
-    pub admin_fees: Pubkey,
-    /// The index of the token. Token A = 0, Token B = 1.
-    pub index: u8,
-}
 
 impl Sealed for SwapInfo {}
 impl IsInitialized for SwapInfo {
