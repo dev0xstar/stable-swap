@@ -53,7 +53,19 @@ pub struct SwapInfo {
     pub fees: Fees,
 }
 
-
+/// Information about one of the tokens.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct SwapTokenInfo {
+    /// Token account for pool reserves
+    pub reserves: Pubkey,
+    /// Mint information for the token
+    pub mint: Pubkey,
+    /// Public key of the admin token account to receive trading and / or withdrawal fees for token
+    pub admin_fees: Pubkey,
+    /// The index of the token. Token A = 0, Token B = 1.
+    pub index: u8,
+}
 
 impl Sealed for SwapInfo {}
 impl IsInitialized for SwapInfo {
