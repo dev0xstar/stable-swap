@@ -10,7 +10,20 @@ use anchor_lang::prelude::*;
 
 
 
-
+/// Accounts for a [crate::withdraw] instruction.
+#[derive(Accounts, Clone)]
+pub struct Withdraw<'info> {
+    /// The context of the user.
+    pub user: SwapUserContext<'info>,
+    /// The input account for LP tokens.
+    pub input_lp: AccountInfo<'info>,
+    /// The pool mint of the swap.
+    pub pool_mint: AccountInfo<'info>,
+    /// The A token of the swap.
+    pub output_a: SwapOutput<'info>,
+    /// The B token of the swap.
+    pub output_b: SwapOutput<'info>,
+}
 
 /// Accounts for a [crate::set_fee_account] instruction.
 #[derive(Accounts, Clone)]
