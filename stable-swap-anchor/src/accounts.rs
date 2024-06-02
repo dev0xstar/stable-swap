@@ -8,7 +8,30 @@ use anchor_lang::prelude::*;
 
 
 
-
+/// Accounts for a [crate::withdraw_one] instruction.
+#[derive(Accounts, Clone)]
+pub struct WithdrawOne<'info> {
+    /// The context of the user.
+    pub user: SwapUserContext<'info>,
+    /// The pool mint of the swap.
+    pub pool_mint: AccountInfo<'info>,
+    /// The input (user)'s LP token account
+    pub input_lp: AccountInfo<'info>,
+    /// The TokenAccount holding the swap's reserves of quote tokens; i.e., the token not being withdrawn.
+    ///
+    /// - If withdrawing token A, this is `swap_info.token_b.reserves`.
+    /// - If withdrawing token B, this is `swap_info.token_a.reserves`.
+    ///
+    /// These reserves are needed for the withdraw_one instruction since the
+    /// StableSwap `D` invariant requires both the base and quote reserves
+    /// to determine how many tokens are paid out to users withdrawing from
+    /// the swap.
+    ///
+    /// *For more info, see [stable_swap_client::state::SwapTokenInfo::reserves].*
+    pub quote_reserves: AccountInfo<'info>,
+    /// Accounts for output tokens.
+    pub output: SwapOutput<'info>,
+}
 
 /// Accounts for a [crate::withdraw] instruction.
 #[derive(Accounts, Clone)]
