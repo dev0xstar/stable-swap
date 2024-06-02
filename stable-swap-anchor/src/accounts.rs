@@ -2,7 +2,27 @@
 
 use anchor_lang::prelude::*;
 
-
+/// Accounts for an [crate::initialize] instruction.
+#[derive(Accounts, Clone)]
+pub struct Initialize<'info> {
+    /// The swap.
+    #[account(signer)]
+    pub swap: AccountInfo<'info>,
+    /// The authority of the swap.
+    pub swap_authority: AccountInfo<'info>,
+    /// The admin of the swap.
+    pub admin: AccountInfo<'info>,
+    /// The A token of the swap.
+    pub token_a: InitToken<'info>,
+    /// The B token of the swap.
+    pub token_b: InitToken<'info>,
+    /// The pool mint of the swap.
+    pub pool_mint: AccountInfo<'info>,
+    /// The output account for LP tokens.
+    pub output_lp: AccountInfo<'info>,
+    /// The spl_token program.
+    pub token_program: AccountInfo<'info>,
+}
 
 
 
