@@ -26,7 +26,16 @@ pub struct Initialize<'info> {
 
 
 
-
+/// Accounts for a [crate::swap] instruction.
+#[derive(Accounts, Clone)]
+pub struct Swap<'info> {
+    /// The context of the user.
+    pub user: SwapUserContext<'info>,
+    /// Accounts for input tokens.
+    pub input: SwapToken<'info>,
+    /// Accounts for output tokens.
+    pub output: SwapOutput<'info>,
+}
 
 /// Accounts for a [crate::withdraw_one] instruction.
 #[derive(Accounts, Clone)]
