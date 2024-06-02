@@ -24,7 +24,20 @@ pub struct Initialize<'info> {
     pub token_program: AccountInfo<'info>,
 }
 
-
+/// Accounts for a [crate::deposit] instruction.
+#[derive(Accounts, Clone)]
+pub struct Deposit<'info> {
+    /// The context of the user.
+    pub user: SwapUserContext<'info>,
+    /// The A token of the swap.
+    pub input_a: SwapToken<'info>,
+    /// The B token of the swap.
+    pub input_b: SwapToken<'info>,
+    /// The pool mint of the swap.
+    pub pool_mint: AccountInfo<'info>,
+    /// The output account for LP tokens.
+    pub output_lp: AccountInfo<'info>,
+}
 
 /// Accounts for a [crate::swap] instruction.
 #[derive(Accounts, Clone)]
