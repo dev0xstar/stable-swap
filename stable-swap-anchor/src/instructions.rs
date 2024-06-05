@@ -67,48 +67,6 @@ pub fn initialize<'a, 'b, 'c, 'info>(
 /// * `token_a_amount` - Amount of tokens of [`Deposit::input_a`] to deposit.
 /// * `token_b_amount` - Amount of tokens of [`Deposit::input_b`] to deposit.
 /// * `min_mint_amount` - Minimum amount of LP tokens to mint.
-pub fn deposit<'a, 'b, 'c, 'info>(
-    ctx: CpiContext<'a, 'b, 'c, 'info, Deposit<'info>>,
-    token_a_amount: u64,
-    token_b_amount: u64,
-    min_mint_amount: u64,
-) -> Result<()> {
-    let ix = stable_swap_client::instruction::deposit(
-        // token program ID is verified by the stable swap program
-        ctx.accounts.user.token_program.key,
-        ctx.accounts.user.swap.key,
-        ctx.accounts.user.swap_authority.key,
-        ctx.accounts.user.user_authority.key,
-        ctx.accounts.input_a.user.key,
-        ctx.accounts.input_b.user.key,
-        ctx.accounts.input_a.reserve.key,
-        ctx.accounts.input_b.reserve.key,
-        ctx.accounts.pool_mint.key,
-        ctx.accounts.output_lp.key,
-        token_a_amount,
-        token_b_amount,
-        min_mint_amount,
-    )?;
-    solana_program::program::invoke_signed(
-        &ix,
-        &[
-            ctx.program,
-            ctx.accounts.user.token_program,
-            ctx.accounts.user.swap,
-            ctx.accounts.user.swap_authority,
-            ctx.accounts.user.user_authority,
-            // deposit
-            ctx.accounts.input_a.user,
-            ctx.accounts.input_b.user,
-            ctx.accounts.input_a.reserve,
-            ctx.accounts.input_b.reserve,
-            ctx.accounts.pool_mint,
-            ctx.accounts.output_lp,
-        ],
-        ctx.signer_seeds,
-    )?;
-    Ok(())
-}
 
 /// Creates and invokes a [stable_swap_client::instruction::swap] instruction.
 ///
@@ -118,43 +76,6 @@ pub fn deposit<'a, 'b, 'c, 'info>(
 ///
 /// * `amount_in` - Amount of [`Swap::input`] tokens to swap.
 /// * `minimum_amount_out` - Minimum amount of [`Swap::output`] tokens to receive.
-pub fn swap<'a, 'b, 'c, 'info>(
-    ctx: CpiContext<'a, 'b, 'c, 'info, Swap<'info>>,
-    amount_in: u64,
-    minimum_amount_out: u64,
-) -> Result<()> {
-    let ix = stable_swap_client::instruction::swap(
-        ctx.accounts.user.token_program.key,
-        ctx.accounts.user.swap.key,
-        ctx.accounts.user.swap_authority.key,
-        ctx.accounts.user.user_authority.key,
-        ctx.accounts.input.user.key,
-        ctx.accounts.input.reserve.key,
-        ctx.accounts.output.user_token.reserve.key,
-        ctx.accounts.output.user_token.user.key,
-        ctx.accounts.output.fees.key,
-        amount_in,
-        minimum_amount_out,
-    )?;
-    solana_program::program::invoke_signed(
-        &ix,
-        &[
-            ctx.program,
-            ctx.accounts.user.token_program,
-            ctx.accounts.user.swap,
-            ctx.accounts.user.swap_authority,
-            ctx.accounts.user.user_authority,
-            // swap
-            ctx.accounts.input.user,
-            ctx.accounts.input.reserve,
-            ctx.accounts.output.user_token.reserve,
-            ctx.accounts.output.user_token.user,
-            ctx.accounts.output.fees,
-        ],
-        ctx.signer_seeds,
-    )?;
-    Ok(())
-}
 
 /// Creates and invokes a [stable_swap_client::instruction::withdraw_one] instruction.
 ///
