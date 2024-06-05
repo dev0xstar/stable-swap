@@ -76,6 +76,43 @@ pub fn initialize<'a, 'b, 'c, 'info>(
 ///
 /// * `amount_in` - Amount of [`Swap::input`] tokens to swap.
 /// * `minimum_amount_out` - Minimum amount of [`Swap::output`] tokens to receive.
+pub fn swap<'a, 'b, 'c, 'info>(
+    ctx: CpiContext<'a, 'b, 'c, 'info, Swap<'info>>,
+    amount_in: u64,
+    minimum_amount_out: u64,
+) -> Result<()> {
+    let ix = stable_swap_client::instruction::swap(
+        ctx.accounts.user.token_program.key,
+        ctx.accounts.user.swap.key,
+        ctx.accounts.user.swap_authority.key,
+        ctx.accounts.user.user_authority.key,
+        ctx.accounts.input.user.key,
+        ctx.accounts.input.reserve.key,
+        ctx.accounts.output.user_token.reserve.key,
+        ctx.accounts.output.user_token.user.key,
+        ctx.accounts.output.fees.key,
+        amount_in,
+        minimum_amount_out,
+    )?;
+    solana_program::program::invoke_signed(
+        &ix,
+        &[
+            ctx.program,
+            ctx.accounts.user.token_program,
+            ctx.accounts.user.swap,
+            ctx.accounts.user.swap_authority,
+            ctx.accounts.user.user_authority,
+            // swap
+            ctx.accounts.input.user,
+            ctx.accounts.input.reserve,
+            ctx.accounts.output.user_token.reserve,
+            ctx.accounts.output.user_token.user,
+            ctx.accounts.output.fees,
+        ],
+        ctx.signer_seeds,
+    )?;
+    Ok(())
+}
 
 /// Creates and invokes a [stable_swap_client::instruction::withdraw_one] instruction.
 ///
