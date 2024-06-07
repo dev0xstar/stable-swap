@@ -26,27 +26,6 @@ impl Owner for SwapInfo {
     }
 }
 
-impl Deref for SwapInfo {
-    type Target = stable_swap_client::state::SwapInfo;
 
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
 
-impl anchor_lang::AccountSerialize for SwapInfo {
-    fn try_serialize<W: std::io::Write>(&self, _writer: &mut W) -> Result<()> {
-        // no-op
-        Ok(())
-    }
-}
 
-impl anchor_lang::AccountDeserialize for SwapInfo {
-    fn try_deserialize(buf: &mut &[u8]) -> Result<Self> {
-        SwapInfo::try_deserialize_unchecked(buf)
-    }
-
-    fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
-        Ok(stable_swap_client::state::SwapInfo::unpack(buf).map(SwapInfo)?)
-    }
-}
