@@ -141,5 +141,17 @@ pub struct SwapOutput<'info> {
     pub fees: AccountInfo<'info>,
 }
 
-
+/// Accounts for an instruction that interacts with the swap.
+#[derive(Accounts, Clone)]
+pub struct SwapUserContext<'info> {
+    /// The spl_token program.
+    pub token_program: AccountInfo<'info>,
+    /// The authority of the swap.
+    pub swap_authority: AccountInfo<'info>,
+    /// The authority of the user.
+    #[account(signer)]
+    pub user_authority: AccountInfo<'info>,
+    /// The swap.
+    pub swap: AccountInfo<'info>,
+}
 
