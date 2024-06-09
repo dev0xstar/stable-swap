@@ -112,7 +112,16 @@ pub struct CommitNewAdmin<'info> {
 // Various accounts
 // --------------------------------
 
-
+/// Token accounts for initializing a [crate::SwapInfo].
+#[derive(Accounts, Clone)]
+pub struct InitToken<'info> {
+    /// The token account for the pool's reserves of this token.
+    pub reserve: AccountInfo<'info>,
+    /// The token account for the fees associated with the token.
+    pub fees: AccountInfo<'info>,
+    /// The mint of the token.
+    pub mint: AccountInfo<'info>,
+}
 
 
 
