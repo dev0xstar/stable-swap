@@ -20,5 +20,10 @@ impl SwapInfo {
     }
 }
 
+impl Owner for SwapInfo {
+    fn owner() -> Pubkey {
+        crate::ID
+    }
+}
 
 
