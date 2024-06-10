@@ -41,3 +41,12 @@ impl anchor_lang::AccountSerialize for SwapInfo {
     }
 }
 
+impl anchor_lang::AccountDeserialize for SwapInfo {
+    fn try_deserialize(buf: &mut &[u8]) -> Result<Self> {
+        SwapInfo::try_deserialize_unchecked(buf)
+    }
+
+    fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
+        Ok(stable_swap_client::state::SwapInfo::unpack(buf).map(SwapInfo)?)
+    }
+}
