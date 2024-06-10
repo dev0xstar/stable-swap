@@ -26,4 +26,12 @@ impl Owner for SwapInfo {
     }
 }
 
+impl Deref for SwapInfo {
+    type Target = stable_swap_client::state::SwapInfo;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 
