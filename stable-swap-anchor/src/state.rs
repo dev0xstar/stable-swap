@@ -34,4 +34,10 @@ impl Deref for SwapInfo {
     }
 }
 
+impl anchor_lang::AccountSerialize for SwapInfo {
+    fn try_serialize<W: std::io::Write>(&self, _writer: &mut W) -> Result<()> {
+        // no-op
+        Ok(())
+    }
+}
 
