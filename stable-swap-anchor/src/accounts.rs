@@ -154,3 +154,15 @@ pub struct SwapUserContext<'info> {
     /// The swap.
     pub swap: AccountInfo<'info>,
 }
+
+/// Accounts for an instruction that requires admin permission.
+#[derive(Accounts, Clone)]
+pub struct AdminUserContext<'info> {
+    /// The public key of the admin account.
+    ///
+    /// *Note: must be a signer.*
+    #[account(signer)]
+    pub admin: AccountInfo<'info>,
+    /// The swap.
+    pub swap: AccountInfo<'info>,
+}
