@@ -132,6 +132,13 @@ pub struct SwapToken<'info> {
     pub reserve: AccountInfo<'info>,
 }
 
-
+/// Token accounts for the output of a StableSwap instruction.
+#[derive(Accounts, Clone)]
+pub struct SwapOutput<'info> {
+    /// The token accounts of the user and the token.
+    pub user_token: SwapToken<'info>,
+    /// The token account for the fees associated with the token.
+    pub fees: AccountInfo<'info>,
+}
 
 
