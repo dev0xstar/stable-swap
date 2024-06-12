@@ -132,37 +132,6 @@ pub struct SwapToken<'info> {
     pub reserve: AccountInfo<'info>,
 }
 
-/// Token accounts for the output of a StableSwap instruction.
-#[derive(Accounts, Clone)]
-pub struct SwapOutput<'info> {
-    /// The token accounts of the user and the token.
-    pub user_token: SwapToken<'info>,
-    /// The token account for the fees associated with the token.
-    pub fees: AccountInfo<'info>,
-}
 
-/// Accounts for an instruction that interacts with the swap.
-#[derive(Accounts, Clone)]
-pub struct SwapUserContext<'info> {
-    /// The spl_token program.
-    pub token_program: AccountInfo<'info>,
-    /// The authority of the swap.
-    pub swap_authority: AccountInfo<'info>,
-    /// The authority of the user.
-    #[account(signer)]
-    pub user_authority: AccountInfo<'info>,
-    /// The swap.
-    pub swap: AccountInfo<'info>,
-}
 
-/// Accounts for an instruction that requires admin permission.
-#[derive(Accounts, Clone)]
-pub struct AdminUserContext<'info> {
-    /// The public key of the admin account.
-    ///
-    /// *Note: must be a signer.*
-    #[account(signer)]
-    pub admin: AccountInfo<'info>,
-    /// The swap.
-    pub swap: AccountInfo<'info>,
-}
+
