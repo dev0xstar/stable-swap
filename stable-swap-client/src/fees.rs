@@ -80,3 +80,47 @@ impl Pack for Fees {
     }
 }
 
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn pack_fees() {
+        let admin_trade_fee_numerator = 1;
+        let admin_trade_fee_denominator = 2;
+        let admin_withdraw_fee_numerator = 3;
+        let admin_withdraw_fee_denominator = 4;
+        let trade_fee_numerator = 5;
+        let trade_fee_denominator = 6;
+        let withdraw_fee_numerator = 7;
+        let withdraw_fee_denominator = 8;
+        let fees = Fees {
+            admin_trade_fee_numerator,
+            admin_trade_fee_denominator,
+            admin_withdraw_fee_numerator,
+            admin_withdraw_fee_denominator,
+            trade_fee_numerator,
+            trade_fee_denominator,
+            withdraw_fee_numerator,
+            withdraw_fee_denominator,
+        };
+
+        let mut packed = [0u8; Fees::LEN];
+        Pack::pack_into_slice(&fees, &mut packed[..]);
+        let unpacked = Fees::unpack_from_slice(&packed).unwrap();
+        assert_eq!(fees, unpacked);
+
+        let mut packed = vec![];
+        packed.extend_from_slice(&admin_trade_fee_numerator.to_le_bytes());
+        packed.extend_from_slice(&admin_trade_fee_denominator.to_le_bytes());
+        packed.extend_from_slice(&admin_withdraw_fee_numerator.to_le_bytes());
+        packed.extend_from_slice(&admin_withdraw_fee_denominator.to_le_bytes());
+        packed.extend_from_slice(&trade_fee_numerator.to_le_bytes());
+        packed.extend_from_slice(&trade_fee_denominator.to_le_bytes());
+        packed.extend_from_slice(&withdraw_fee_numerator.to_le_bytes());
+        packed.extend_from_slice(&withdraw_fee_denominator.to_le_bytes());
+        let unpacked = Fees::unpack_from_slice(&packed).unwrap();
+        assert_eq!(fees, unpacked);
+    }
+}
