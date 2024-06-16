@@ -197,6 +197,30 @@ impl AdminInstruction {
     }
 }
 
+/// Creates a 'ramp_a' instruction
+pub fn ramp_a(
+    swap_pubkey: &Pubkey,
+    admin_pubkey: &Pubkey,
+    target_amp: u64,
+    stop_ramp_ts: i64,
+) -> Result<Instruction, ProgramError> {
+    let data = AdminInstruction::RampA(RampAData {
+        target_amp,
+        stop_ramp_ts,
+    })
+    .pack();
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
+
+    Ok(Instruction {
+        program_id: crate::ID,
+        accounts,
+        data,
+    })
+}
 
 
 /// Creates a 'pause' instruction
