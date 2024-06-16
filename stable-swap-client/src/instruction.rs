@@ -168,6 +168,34 @@ impl AdminInstruction {
         })
     }
 
+    /// Packs a [AdminInstruction](enum.AdminInstruction.html) into a byte buffer.
+    pub fn pack(&self) -> Vec<u8> {
+        let mut buf = Vec::with_capacity(size_of::<Self>());
+        match *self {
+            Self::RampA(RampAData {
+                target_amp,
+                stop_ramp_ts,
+            }) => {
+                buf.push(100);
+                buf.extend_from_slice(&target_amp.to_le_bytes());
+                buf.extend_from_slice(&stop_ramp_ts.to_le_bytes());
+            }
+            Self::StopRampA => buf.push(101),
+            Self::Pause => buf.push(102),
+            Self::Unpause => buf.push(103),
+            Self::SetFeeAccount => buf.push(104),
+            Self::ApplyNewAdmin => buf.push(105),
+            Self::CommitNewAdmin => buf.push(106),
+            Self::SetNewFees(fees) => {
+                buf.push(107);
+                let mut fees_slice = [0u8; Fees::LEN];
+                Pack::pack_into_slice(&fees, &mut fees_slice[..]);
+                buf.extend_from_slice(&fees_slice);
+            }
+        }
+        buf
+    }
+}
 
 
 
