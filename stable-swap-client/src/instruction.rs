@@ -233,6 +233,26 @@ pub fn stop_ramp_a(
         AccountMeta::new(*swap_pubkey, false),
         AccountMeta::new_readonly(*admin_pubkey, true),
     ];
+
+    Ok(Instruction {
+        program_id: crate::ID,
+        accounts,
+        data,
+    })
+}
+
+/// Creates a 'pause' instruction
+pub fn pause(swap_pubkey: &Pubkey, admin_pubkey: &Pubkey) -> Result<Instruction, ProgramError> {
+    let data = AdminInstruction::Pause.pack();
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
     ];
 
     Ok(Instruction {
