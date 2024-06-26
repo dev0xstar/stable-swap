@@ -255,7 +255,23 @@ pub fn pause(swap_pubkey: &Pubkey, admin_pubkey: &Pubkey) -> Result<Instruction,
         accounts,
         data,
     })
+}
 
+/// Creates a 'unpause' instruction
+pub fn unpause(swap_pubkey: &Pubkey, admin_pubkey: &Pubkey) -> Result<Instruction, ProgramError> {
+    let data = AdminInstruction::Unpause.pack();
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
+
+    Ok(Instruction {
+        program_id: crate::ID,
+        accounts,
+        data,
+    })
+}
 
 /// Creates a 'apply_new_admin' instruction
 pub fn apply_new_admin(
