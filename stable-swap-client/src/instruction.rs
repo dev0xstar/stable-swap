@@ -226,7 +226,19 @@ pub fn ramp_a(
 pub fn stop_ramp_a(
     swap_pubkey: &Pubkey,
     admin_pubkey: &Pubkey,
-) -> Result<Instru
+) -> Result<Instruction, ProgramError> {
+    let data = AdminInstruction::StopRampA.pack();
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
+
+    Ok(Instruction {
+        program_id: crate::ID,
+        accounts,
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
 
     Ok(Instruction {
         program_id: crate::ID,
