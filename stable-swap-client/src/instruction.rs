@@ -230,7 +230,19 @@ pub fn stop_ramp_a(
 
     Ok(Instruction {
         program_id: crate::ID,
-        account
+        accounts,
+        data,
+    })
+}
+
+/// Creates a 'unpause' instruction
+pub fn unpause(swap_pubkey: &Pubkey, admin_pubkey: &Pubkey) -> Result<Instruction, ProgramError> {
+    let data = AdminInstruction::Unpause.pack();
+
+    let accounts = vec![
+        AccountMeta::new(*swap_pubkey, false),
+        AccountMeta::new_readonly(*admin_pubkey, true),
+    ];
 
     Ok(Instruction {
         program_id: crate::ID,
