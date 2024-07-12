@@ -10,3 +10,14 @@ use std::ops::Deref;
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SwapInfo(stable_swap_client::state::SwapInfo);
 
+impl SwapInfo {
+    /// The length, in bytes, of the packed representation
+    pub const LEN: usize = stable_swap_client::state::SwapInfo::LEN;
+
+    /// Computes the minimum rent exempt balance of a [SwapInfo].
+    pub fn minimum_rent_exempt_balance() -> Result<u64> {
+        Ok(Rent::get()?.minimum_balance(Self::LEN))
+    }
+}
+Self::Target {
+    
