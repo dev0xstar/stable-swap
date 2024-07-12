@@ -19,5 +19,15 @@ impl SwapInfo {
         Ok(Rent::get()?.minimum_balance(Self::LEN))
     }
 }
-Self::Target {
+
+impl Owner for SwapInfo {
+    fn owner() -> Pubkey {
+        crate::ID
+    }
+}
+
+impl Deref for SwapInfo {
+    type Target = stable_swap_client::state::SwapInfo;
+
+    fn deref(&self) -> &Self::Target {
     
