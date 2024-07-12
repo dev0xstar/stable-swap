@@ -30,4 +30,12 @@ impl Deref for SwapInfo {
     type Target = stable_swap_client::state::SwapInfo;
 
     fn deref(&self) -> &Self::Target {
-    
+        &self.0
+    }
+}
+
+impl anchor_lang::AccountSerialize for SwapInfo {
+    fn try_serialize<W: std::io::Write>(&self, _writer: &mut W) -> Result<()> {
+        // no-op
+        Ok(())
+    }
